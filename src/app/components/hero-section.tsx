@@ -4,6 +4,8 @@ import { usePortfolioHero } from "../../hooks/usePortfolio";
 
 export function HeroSection() {
   const { data: heroData, loading } = usePortfolioHero();
+  console.log('HERO DATA:', heroData);
+  console.log('LOADING:', loading);
 
   const handleDownloadCV = () => {
     const cvUrl = heroData?.cvUrl || "/cv.pdf";

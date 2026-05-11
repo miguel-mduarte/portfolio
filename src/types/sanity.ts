@@ -40,9 +40,19 @@ export interface SanityService {
 
 export interface SanityAbout {
   title: string;
+
   content?: any[];
+
   image?: any;
-  skills?: string[];
+
+  skills?: Array<{
+    title: string;
+    description: string;
+    icon: string;
+  }>;
+
+  technologies?: string[];
+
   experience?: Array<{
     title: string;
     company: string;

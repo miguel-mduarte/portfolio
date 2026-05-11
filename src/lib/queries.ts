@@ -33,9 +33,8 @@ export const servicesQuery = `*[_type == "service"] | order(order asc){
 export const aboutQuery = `*[_type == "aboutSection"][0]{
   title,
   content,
-  image,
   skills,
-  experience[]{title, company, period, description}
+  technologies
 }`;
 
 export const contactQuery = `*[_type == "contactSection"][0]{

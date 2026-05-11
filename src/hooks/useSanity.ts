@@ -15,6 +15,8 @@ export const useSanity = <T>(query: string, params: Record<string, unknown> = {}
         setError(null);
 
         const result = await sanityClient.fetch(query, params);
+        
+        console.log('SANITY RESULT:', result);
 
         if (!canceled) {
           setData(result || fallback || null);
