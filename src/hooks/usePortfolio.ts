@@ -33,8 +33,9 @@ export type PortfolioProject = {
   id: string;
   title: string;
   description: string;
-  content: string;
+  content: any[];
   image: string;
+  galleryImages: string[];
   link: string;
   tags: string[];
   featured?: boolean;
@@ -372,6 +373,8 @@ export const usePortfolioProjects = () => {
 
       mainImage: undefined,
 
+      galleryImages: [],
+
       projectUrl:
         'https://exemplo.com/projeto1',
 
@@ -398,6 +401,8 @@ export const usePortfolioProjects = () => {
 
       mainImage: undefined,
 
+      galleryImages: [],
+
       projectUrl:
         'https://exemplo.com/projeto2',
 
@@ -423,6 +428,8 @@ export const usePortfolioProjects = () => {
       content: [],
 
       mainImage: undefined,
+
+      galleryImages: [],
 
       projectUrl:
         'https://exemplo.com/projeto3',
@@ -454,15 +461,17 @@ export const usePortfolioProjects = () => {
 
       description: project.description,
 
-      content: project.content
-        ? JSON.stringify(project.content)
-        : '',
+      content: project.content || [],
 
       image: project.mainImage
         ? urlFor(project.mainImage)
             .width(1600)
             .url()
         : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800',
+
+      galleryImages: project.galleryImages
+        ? project.galleryImages.map(img => urlFor(img).width(1600).url())
+        : [],
 
       link: project.projectUrl || '#',
 

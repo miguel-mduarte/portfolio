@@ -6,16 +6,21 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  content: any[];
   image: string;
+  galleryImages: string[];
   link: string;
   tags: string[];
+  featured?: boolean;
+  order?: number;
 }
 
 interface ProjectCarouselProps {
   projects: Project[];
+  onMoreClick: (project: Project) => void;
 }
 
-export function ProjectCarousel({ projects }: ProjectCarouselProps) {
+export function ProjectCarousel({ projects, onMoreClick }: ProjectCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
@@ -135,14 +140,12 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                   ))}
                 </div>
 
-                <a
-                  href={projects[currentIndex].link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => onMoreClick(projects[currentIndex])}
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
                 >
-                  Ver Projeto <ExternalLink className="w-4 h-4" />
-                </a>
+                  Mais <ExternalLink className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </motion.div>

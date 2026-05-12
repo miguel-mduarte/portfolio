@@ -22,6 +22,7 @@ export interface SanityProject {
   description: string;
   content?: any[];
   mainImage?: any;
+  galleryImages?: any[];
   projectUrl?: string;
   tags?: string[];
   featured?: boolean;

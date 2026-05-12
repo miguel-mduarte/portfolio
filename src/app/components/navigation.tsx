@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Icon from "../../assets/Icon.svg?react";
 
