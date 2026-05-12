@@ -99,13 +99,27 @@ export function HeroSection() {
                 Baixar CV
               </button>
 
-              <a
-                href={heroData?.ctaLink || "#contact"}
+              <button
+                onClick={() => {
+                  const element = document.getElementById("contact");
+                  if (!element) return;
+
+                  const yOffset = -80;
+                  const y =
+                    element.getBoundingClientRect().top +
+                    window.pageYOffset +
+                    yOffset;
+
+                  window.scrollTo({
+                    top: y,
+                    behavior: "smooth",
+                  });
+                }}
                 className="inline-flex items-center gap-2 px-8 py-4 border border-primary rounded-lg hover:bg-primary/10 transition-all hover:scale-105 font-semibold text-lg"
               >
                 <Mail className="w-5 h-5" />
                 {heroData?.ctaText || "Entre em Contato"}
-              </a>
+              </button>
             </motion.div>
 
             <motion.div
