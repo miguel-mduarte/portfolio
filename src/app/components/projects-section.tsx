@@ -285,25 +285,6 @@ export function ProjectsSection() {
         </div>
       )}
 
-      {/* Floating navigation buttons */}
-      {selectedProject && (
-        <>
-          <button
-            onClick={handlePrevProject}
-            className="fixed left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center hover:bg-background transition-colors shadow-lg sm:left-4 sm:w-12 sm:h-12"
-            aria-label="Projeto anterior"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={handleNextProject}
-            className="fixed right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center hover:bg-background transition-colors shadow-lg sm:right-4 sm:w-12 sm:h-12"
-            aria-label="Próximo projeto"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        </>
-      )}
     </section>
   );
 }
