@@ -115,15 +115,23 @@ export function ProjectCarousel({ projects, onMoreClick }: ProjectCarouselProps)
             }}
             className="absolute w-full h-full"
           >
-            <div className="grid md:grid-cols-2 h-full">
+            <div className="grid md:grid-cols-2 h-full md:h-full">
               <div
-                className="relative bg-cover bg-center"
+                className="
+                  relative
+                  h-[220px]
+                  sm:h-[280px]
+                  md:h-full
+                  bg-cover
+                  bg-center
+                "
                 style={{ backgroundImage: `url(${projects[currentIndex].image})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
               </div>
 
-              <div className="flex flex-col justify-center p-8 md:p-12 bg-card">
+              <div className="flex flex-col justify-center p-8 md:p-12 bg-card
+              ">
                 <h3 className="mb-4">{projects[currentIndex].title}</h3>
                 <p className="text-muted-foreground mb-6">
                   {projects[currentIndex].description}
