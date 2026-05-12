@@ -145,7 +145,13 @@ export function ProjectsSection() {
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
         <DialogContent
-          className="max-w-6xl max-h-[90vh] overflow-y-auto"
+          className="
+            max-h-[90vh] 
+            overflow-y-auto
+            w-[95vw]
+            max-w-4xl
+            lg:max-w-5xl
+            "
           onPointerDownOutside={(event) => {
             if (isImageFullscreen) {
               event.preventDefault();
@@ -171,7 +177,7 @@ export function ProjectsSection() {
                     <img
                       src={selectedProject.galleryImages[selectedImageIndex]}
                       alt={`${selectedProject.title} imagem ${selectedImageIndex + 1}`}
-                      className="w-full h-[320px] sm:h-[420px] lg:h-[500px] object-cover"
+                      className="w-full h-[320px] sm:h-[420px] lg:h-[500px] object-contain"
                     />
 
                     <button
