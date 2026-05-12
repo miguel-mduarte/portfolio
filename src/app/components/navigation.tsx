@@ -23,13 +23,25 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
-  };
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (!element) return;
+
+  const yOffset = -80; // ajuste conforme altura da tua navbar
+  const y =
+    element.getBoundingClientRect().top +
+    window.pageYOffset +
+    yOffset;
+
+  setIsMobileMenuOpen(false);
+
+  setTimeout(() => {
+    window.scrollTo({
+      top: y,
+      behavior: "smooth",
+    });
+  }, 50);
+};
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
