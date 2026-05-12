@@ -1,33 +1,23 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import { useInView } from "./use-in-view";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { toast } from "sonner";
+import { useState } from "react"
+import { motion } from "motion/react"
+import { useInView } from "./use-in-view"
+import { Mail, MapPin, Phone, Send } from "lucide-react"
+import { toast } from "sonner"
+
+import { useContactSection } from "../../hooks/useContactSection"
+import { getIcon } from "../../utils/getIcon"
 
 export function ContactSection() {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView()
+  const { data: contact, loading } = useContactSection()
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      toast.success("Mensagem enviada com sucesso!");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      toast.error("Erro ao enviar mensagem. Tente novamente.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,8 +25,34 @@ export function ContactSection() {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }));
-  };
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setIsSubmitting(true)
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+
+    if (!res.ok) throw new Error()
+
+    toast.success("Mensagem enviada com sucesso!")
+    setFormData({ name: "", email: "", message: "" })
+  } catch {
+    toast.error("Erro ao enviar mensagem.")
+  } finally {
+    setIsSubmitting(false)
+  }
+}
+
+  if (loading) return null
 
   return (
     <section id="contact" className="py-20 bg-muted/30">
@@ -48,146 +64,121 @@ export function ContactSection() {
           transition={{ duration: 0.6 }}
           className="max-w-6xl mx-auto"
         >
+          {/* HEADER */}
           <div className="text-center mb-16">
             <h2 className="mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Entre em Contato
+              {contact?.title}
             </h2>
+
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Tem um projeto em mente? Vamos conversar e transformar suas ideias em
-              realidade.
+              {contact?.description}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            {/* INFO */}
+            <div>
               <h3 className="mb-6">Informações de Contato</h3>
 
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4>Email</h4>
-                    <a
-                      href="mailto:contato@exemplo.com"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      contato@exemplo.com
-                    </a>
-                  </div>
+                {/* EMAIL */}
+                <div className="flex gap-4">
+                  <Mail className="text-primary" />
+                  <a href={`mailto:${contact?.email}`}>
+                    {contact?.email}
+                  </a>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4>Telefone</h4>
-                    <a
-                      href="tel:+5511999999999"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      +55 11 99999-9999
-                    </a>
-                  </div>
+                {/* PHONE */}
+                <div className="flex gap-4">
+                  <Phone className="text-primary" />
+                  <a href={`tel:${contact?.phone}`}>
+                    {contact?.phone}
+                  </a>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4>Localização</h4>
-                    <p className="text-muted-foreground">São Paulo, Brasil</p>
-                  </div>
+                {/* LOCATION */}
+                <div className="flex gap-4">
+                  <MapPin className="text-primary" />
+                  <p>{contact?.location}</p>
                 </div>
               </div>
 
+              {/* CTA */}
+              {contact?.primaryCta && (
+                <a
+                  href={contact.primaryCta.link}
+                  target="_blank"
+                  className="inline-flex mt-6 px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+                >
+                  {contact.primaryCta.label}
+                </a>
+              )}
+
+              {/* SOCIALS */}
+              <div className="flex gap-3 mt-6">
+                {contact?.socials?.map((s: any) => {
+                  const Icon = getIcon(s.icon)
+
+                  return (
+                    <a
+                      key={s.url}
+                      href={s.url}
+                      target="_blank"
+                      className="w-10 h-10 flex items-center justify-center rounded-lg bg-muted hover:bg-primary/10"
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  )
+                })}
+              </div>
+
+              {/* TEXT */}
               <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-xl">
                 <p className="text-muted-foreground">
-                  Disponível para trabalhos freelance e projetos interessantes.
-                  Respondo geralmente em até 24 horas!
+                  {contact?.availabilityText}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block mb-2">
-                    Nome
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                    placeholder="Seu nome"
-                  />
-                </div>
+            {/* FORM */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Nome"
+                className="w-full p-3 bg-background border rounded-lg"
+              />
 
-                <div>
-                  <label htmlFor="email" className="block mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                    placeholder="seu@email.com"
-                  />
-                </div>
+              <input
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full p-3 bg-background border rounded-lg"
+              />
 
-                <div>
-                  <label htmlFor="message" className="block mb-2">
-                    Mensagem
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
-                    placeholder="Conte-me sobre seu projeto..."
-                  />
-                </div>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Mensagem"
+                rows={6}
+                className="w-full p-3 bg-background border rounded-lg"
+              />
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                >
-                  {isSubmitting ? (
-                    <>Enviando...</>
-                  ) : (
-                    <>
-                      Enviar Mensagem <Send className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
-              </form>
-            </motion.div>
+              <button
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg"
+              >
+                {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
+                <Send className="w-4 h-4" />
+              </button>
+            </form>
           </div>
         </motion.div>
       </div>
     </section>
-  );
+  )
 }

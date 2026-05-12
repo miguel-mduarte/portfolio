@@ -63,7 +63,7 @@ export function Navigation() {
           >
             <Icon className="w-7 h-7 text-primary" />
             <span className="brand-name bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Miguel Duarte
+              PurpleRoot - Portfolio
             </span>
           </motion.button>
 

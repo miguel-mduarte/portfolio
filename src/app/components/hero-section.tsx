@@ -136,17 +136,7 @@ export function HeroSection() {
                   <Linkedin className="w-6 h-6" />
                 </a>
               )}
-              {heroData?.socialLinks?.twitter && (
-                <a
-                  href={heroData.socialLinks.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/40 flex items-center justify-center hover:border-primary hover:scale-110 transition-all hover:bg-primary hover:text-primary-foreground"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="w-6 h-6" />
-                </a>
-              )}
+              
               {heroData?.socialLinks?.instagram && (
                 <a
                   href={heroData.socialLinks.instagram}

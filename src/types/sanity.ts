@@ -1,7 +1,6 @@
 export interface SanitySocialLinks {
   github?: string;
   linkedin?: string;
-  twitter?: string;
   instagram?: string;
 }
 
