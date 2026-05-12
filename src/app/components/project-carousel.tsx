@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface Project {
@@ -144,7 +144,7 @@ export function ProjectCarousel({ projects, onMoreClick }: ProjectCarouselProps)
                   onClick={() => onMoreClick(projects[currentIndex])}
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
                 >
-                  Mais <ExternalLink className="w-4 h-4" />
+                  Detalhes <ChevronDown className="w-4 h-4" />
                 </button>
               </div>
             </div>
